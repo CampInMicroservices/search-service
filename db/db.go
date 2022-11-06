@@ -13,7 +13,6 @@ type Store struct {
 
 func Connect(driver, source string) (*Store, error) {
 
-	// Connect to database.
 	db, err := sqlx.Connect(driver, source)
 	if err != nil {
 		return nil, err

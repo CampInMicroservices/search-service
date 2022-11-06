@@ -9,6 +9,9 @@ import (
 type Config struct {
 	Environment   string `mapstructure:"ENVIRONMENT"`
 	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
+	DBDriver      string `mapstructure:"DB_DRIVER"`
+	DBSource      string `mapstructure:"DB_SOURCE"`
+	GinMode       string `mapstructure:"GIN_MODE"`
 }
 
 // LoadConfig reads configuration from file or environment variables.
