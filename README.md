@@ -3,7 +3,7 @@
 ## Installation (locally)
 
 
-1. Install make
+1. Install make (`choco install make` for Win)
 2. Install golang-migrate package (https://github.com/golang-migrate/migrate)
 3. ...
 
