@@ -11,6 +11,7 @@ type Config struct {
 	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
 	DBDriver      string `mapstructure:"DB_DRIVER"`
 	DBSource      string `mapstructure:"DB_SOURCE"`
+	MigrationURL  string `mapstructure:"MIGRATION_URL"`
 	GinMode       string `mapstructure:"GIN_MODE"`
 }
 
