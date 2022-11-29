@@ -33,7 +33,13 @@ func NewServer(config config.Config, store *db.Store) (*Server, error) {
 		v1.POST("/listings", server.CreateListing)
 	}
 
-	// TODO: Setup health check routes
+	// Setup health check routes
+	health := router.Group("health")
+	{
+		health.GET("/live", server.Live)
+		health.GET("/ready", server.Ready)
+	}
+
 	// TODO: Setup metrics routes
 
 	server.router = router

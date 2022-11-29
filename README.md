@@ -111,15 +111,13 @@ kubectl logs search-service-deployment-577c88bcdb-5qjdq
 az aks delete --name RSO-cluster --resource-group RSO
 ```
 
-## How the service was created
+## Roadmap
 
-```
-git clone repo-name
-cd repo-name
-
-go mod init service-name
-go get -u github.com/gin-gonic/gin
-
-go get github.com/spf13/viper
-go get github.com/jmoiron/sqlx
-```
+- [x] Dockerfile
+- [x] CI/CD pipeline (Github actions)
+- [x] Kubernetes cluster specifications + AKS
+- [x] Health checks
+- [] OpenAPI Specification
+- [] Metrics
+- [] Config server
+- [] Logging
