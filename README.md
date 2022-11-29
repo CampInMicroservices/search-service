@@ -97,7 +97,12 @@ az aks get-credentials --resource-group RSO --name RSO-cluster
 
 # Apply deployment
 kubectl apply -f k8s/deploymeny.yml
-kubectl get service search-service-service --watch          # Press ^c after the EXTERNAL-IP shows up
+# kubectl get service search-service-service --watch      # Press ^c after the EXTERNAL-IP shows up
+# (service type was changed to ClusterIP since we are using ingress as reverse proxy)
+
+# Apply ingress deployment and ingress nginx controller (only in search-service)
+kubectl apply -f k8s/ingress.yml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.5.1/deploy/static/provider/cloud/deploy.yaml
 
 # Logs
 kubectl logs search-service-deployment-577c88bcdb-5qjdq
