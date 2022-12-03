@@ -30,3 +30,10 @@ spec:
                 name: manager-service-service
                 port:
                   number: 80
+          - path: /booking-service(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: booking-service-service
+                port:
+                  number: 80
