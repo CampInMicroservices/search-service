@@ -23,3 +23,10 @@ spec:
                 name: search-service-service
                 port:
                   number: 80
+          - path: /manager-service(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: manager-service-service
+                port:
+                  number: 80

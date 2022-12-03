@@ -96,9 +96,11 @@ az aks create -g RSO -n RSO-cluster --enable-managed-identity --node-count 1 --g
 az aks get-credentials --resource-group RSO --name RSO-cluster
 
 # Apply deployment
-kubectl apply -f k8s/deploymeny.yml
-# kubectl get service search-service-service --watch      # Press ^c after the EXTERNAL-IP shows up
-# (service type was changed to ClusterIP since we are using ingress as reverse proxy)
+kubectl apply -f k8s/deployment.yml
+
+# Apply all other deployments
+# kubectl apply -f manager-service/k8s/deployment.yml
+# ...
 
 # Apply ingress deployment and ingress nginx controller (only in search-service)
 kubectl apply -f k8s/ingress.yml
@@ -117,7 +119,7 @@ az aks delete --name RSO-cluster --resource-group RSO
 - [x] CI/CD pipeline (Github actions)
 - [x] Kubernetes cluster specifications + AKS
 - [x] Health checks
-- [] OpenAPI Specification
-- [] Metrics
-- [] Config server
-- [] Logging
+- [ ] OpenAPI Specification
+- [ ] Metrics
+- [ ] Config server
+- [ ] Logging
