@@ -5,7 +5,8 @@
 
 1. Install make (`choco install make` for Win)
 2. Install golang-migrate package (https://github.com/golang-migrate/migrate)
-3. ...
+3. Install Consul config server (https://developer.hashicorp.com/consul/downloads)
+4. ...
 
 ### Run the following commands
 
@@ -17,8 +18,8 @@ make network
 make postgres
 make createdb
 
-# Run db migrations
-make migrateup
+# Start consul service
+consul agent -dev 
 
 # Start the service
 make server

@@ -1,21 +1,19 @@
 package api
 
 import (
-	"search-service/config"
+	conf "search-service/config"
 	"search-service/db"
 
 	"github.com/gin-gonic/gin"
 )
 
-// Server serves HTTP requests for our banking service
 type Server struct {
-	config config.Config
+	config conf.Config
 	store  *db.Store
 	router *gin.Engine
 }
 
-// NewServer creates a new HTTP server and set up routing
-func NewServer(config config.Config, store *db.Store) (*Server, error) {
+func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 
 	gin.SetMode(config.GinMode)
 	router := gin.Default()
@@ -48,6 +46,20 @@ func NewServer(config config.Config, store *db.Store) (*Server, error) {
 
 // Start runs the HTTP server on a specific address
 func (server *Server) Start(address string) error {
+
+	go conf.WatchConsulConfig("DB_SOURCE", server.config.ConsulAddress, func(source string) {
+		store, err := db.Connect(server.config.DBDriver, source)
+
+		if err == nil {
+			// Run DB migration
+			db.RunDBMigration(server.config.MigrationURL, server.config.DBSource)
+
+			// Rewire the connection
+			server.store.Close()
+			server.store = store
+		}
+	})
+
 	return server.router.Run(address)
 }
 

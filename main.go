@@ -5,10 +5,6 @@ import (
 	"search-service/api"
 	"search-service/config"
 	"search-service/db"
-
-	"github.com/golang-migrate/migrate/v4"
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 func main() {
@@ -26,7 +22,7 @@ func main() {
 	}
 
 	// Run DB migration
-	runDBMigration(config.MigrationURL, config.DBSource)
+	db.RunDBMigration(config.MigrationURL, config.DBSource)
 
 	// Create a server and setup routes
 	server, err := api.NewServer(config, store)
@@ -38,17 +34,4 @@ func main() {
 	if err := server.Start(config.ServerAddress); err != nil {
 		log.Fatal("Failed to start a server: ", err)
 	}
-}
-
-func runDBMigration(migrationURL string, dbSource string) {
-	migration, err := migrate.New(migrationURL, dbSource)
-	if err != nil {
-		log.Fatal("Cannot create new migrate instance", err)
-	}
-
-	if err = migration.Up(); err != nil && err != migrate.ErrNoChange {
-		log.Fatal("Failed to run migrate up", err)
-	}
-
-	log.Println("Db migrated successfully")
 }
