@@ -3,6 +3,7 @@ package api
 import (
 	conf "search-service/config"
 	"search-service/db"
+	"search-service/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +18,7 @@ func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 
 	gin.SetMode(config.GinMode)
 	router := gin.Default()
+	router.Use(middleware.Logger(config.LogitAddress))
 
 	server := &Server{
 		config: config,
