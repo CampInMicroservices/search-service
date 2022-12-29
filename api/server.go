@@ -23,7 +23,7 @@ func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 		store:  store,
 	}
 
-	// Setup routing for server
+	// Server
 	v1 := router.Group("v1")
 	{
 		v1.GET("/listings/:id", server.GetListingByID)
@@ -31,20 +31,24 @@ func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 		v1.POST("/listings", server.CreateListing)
 	}
 
-	// Setup health check routes
+	// Health
 	health := router.Group("health")
 	{
 		health.GET("/live", server.Live)
 		health.GET("/ready", server.Ready)
 	}
 
-	// TODO: Setup metrics routes
+	// Metrics
+	metrics := router.Group("metrics")
+	{
+		metrics.GET("", server.Metrics)
+	}
 
 	server.router = router
 	return server, nil
 }
 
-// Start runs the HTTP server on a specific address
+// Start HTTP server and initialize consul dynamic config
 func (server *Server) Start(address string) error {
 
 	go conf.WatchConsulConfig("DB_SOURCE", server.config.ConsulAddress, func(source string) {
