@@ -37,3 +37,10 @@ spec:
                 name: booking-service-service
                 port:
                   number: 80
+          - path: /payment-service(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: payment-service-service
+                port:
+                  number: 80
