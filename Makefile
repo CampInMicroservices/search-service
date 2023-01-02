@@ -16,6 +16,12 @@ migrateup:
 migratedown:
 	migrate -path db/migration -database "postgres://root:secure@localhost:5432/campin_db?sslmode=disable" -verbose down
 
+grafana:
+	docker run --name grafana --network campin-network -p 3000:3000 -d grafana/grafana-enterprise
+
+consul:
+	docker run -d -p 8500:8500 -p 8600:8600/udp --name=consul6 consul:1.14.3 agent -server -bootstrap -ui -client=0.0.0.0
+
 server:
 	go run main.go
 

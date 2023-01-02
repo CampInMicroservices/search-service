@@ -5,7 +5,7 @@
 
 1. Install make (`choco install make` for Win)
 2. Install golang-migrate package (https://github.com/golang-migrate/migrate)
-3. Install Consul config server (https://developer.hashicorp.com/consul/downloads)
+3. *Optionally*: Install Consul config server (https://developer.hashicorp.com/consul/downloads)
 4. ...
 
 ### Run the following commands
@@ -18,8 +18,8 @@ make network
 make postgres
 make createdb
 
-# Start consul service
-consul agent -dev 
+# Start consul service (available at localhost:8500)
+make consul 
 
 # Start the service
 make server
@@ -112,6 +112,20 @@ kubectl logs search-service-deployment-577c88bcdb-5qjdq
 
 # DELETE cluster
 az aks delete --name RSO-cluster --resource-group RSO
+```
+
+## Consul configuration server
+
+We are using custom server for Consul. Connect to remote server via `ssh`: 
+
+```
+ssh user@snf-59529.vm.okeanos-global.grnet.gr
+```
+
+Run Consul inside Docker:
+
+```
+sudo docker run -d -p 80:8500 -p 8600:8600/udp --name=consul consul:1.14.3 agent -server -bootstrap -ui -client=0.0.0.0
 ```
 
 ## Roadmap
