@@ -44,3 +44,10 @@ spec:
                 name: payment-service-service
                 port:
                   number: 80
+          - path: /recommendation-service(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: recommendation-service-service
+                port:
+                  number: 80
