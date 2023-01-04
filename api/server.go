@@ -31,6 +31,8 @@ func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 		v1.GET("/listings/:id", server.GetListingByID)
 		v1.GET("/listings", server.GetAllListings)
 		v1.POST("/listings", server.CreateListing)
+
+		v1.GET("/recommendations", server.GetRecommendedLocations)
 	}
 
 	// Health
