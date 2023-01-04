@@ -19,6 +19,7 @@ jobs:
                 SERVER_ADDRESS=0.0.0.0:8080
                 CONSUL_ADDRESS=83.212.126.238
                 LOGIT_ADDRESS=7da32513-7943-43f7-ac93-7dd1435b92e3-ls.logit.io:23703
+                RECOMMENDATION_SERVICE_ADDRESS=recommendation-service-service.default.svc.cluster.local
                 DB_DRIVER=postgres
                 DB_SOURCE=${{ secrets.PROD_DB_CONNECTION }}
                 MIGRATION_URL=file://db/migration
