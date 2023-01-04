@@ -132,7 +132,9 @@ type weatherApiResponse struct {
 
 func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 
-	graphqlClient := gclient.NewClient(server.config.RecommendationServiceAddress + "/v1/locations")
+	url := fmt.Sprintf("http://%s/v1/locations", server.config.RecommendationServiceAddress)
+
+	graphqlClient := gclient.NewClient(url)
 
 	query := `{
 				cities {
@@ -170,7 +172,7 @@ func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 		fmt.Println(key)
 		fmt.Println(value)
 
-		url := server.config.RecommendationServiceAddress + "/v1/weather"
+		url := fmt.Sprintf("http://%s/v1/weather", server.config.RecommendationServiceAddress)
 
 		req, _ := http.NewRequest("GET", url, nil)
 
