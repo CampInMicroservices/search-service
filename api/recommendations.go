@@ -178,8 +178,6 @@ func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 	}
 
 	for key, value := range locationsResponse.Cities.Data {
-		fmt.Println(key)
-		fmt.Println(value)
 
 		url := fmt.Sprintf("http://%s/v1/weather", server.config.RecommendationServiceAddress)
 

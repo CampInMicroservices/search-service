@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -56,7 +57,7 @@ func PingRecommendationService(url string) (*RecommendationServicePingResponse, 
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		fmt.Println("Cannot unmarshal Response")
+		log.Println("Cannot unmarshal Response")
 		return nil, errors.New("Recommendation service unavailable!")
 	}
 
@@ -66,7 +67,6 @@ func PingRecommendationService(url string) (*RecommendationServicePingResponse, 
 	var r RecommendationServicePingResponse
 	err = json.Unmarshal(body, &r)
 	if err != nil {
-		fmt.Println("Cannot unmarshal Response")
 		return nil, errors.New("Recommendation service unavailable!")
 	}
 
