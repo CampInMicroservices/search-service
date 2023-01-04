@@ -132,7 +132,16 @@ type weatherApiResponse struct {
 
 func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 
-	url := fmt.Sprintf("http://%s/v1/locations", server.config.RecommendationServiceAddress)
+	url := fmt.Sprintf("http://%s/health/live", server.config.RecommendationServiceAddress)
+
+	_, err := PingRecommendationService(url)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.Abort()
+		return
+	}
+
+	url = fmt.Sprintf("http://%s/v1/locations", server.config.RecommendationServiceAddress)
 
 	graphqlClient := gclient.NewClient(url)
 
