@@ -91,7 +91,7 @@ az login -u <username> -p <password>
 # az provider register --namespace Microsoft.OperationalInsights
 
 # Create a cluster inside resource group
-az aks create -g RSO -n RSO-cluster --enable-managed-identity --node-count 1 --generate-ssh-keys
+az aks create -g RSO -n RSO-cluster --node-vm-size standard_b4ms --enable-managed-identity --node-count 1 --generate-ssh-keys
 
 # Create a record in ~/.kube/config to access the cluster
 az aks get-credentials --resource-group RSO --name RSO-cluster
