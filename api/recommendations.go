@@ -24,7 +24,8 @@ type LocationsResponse struct {
 			Weather      string  `json:"weather"`
 			WeatherShort string  `json:"weatherShort"`
 		} `json:"data"`
-		Error string `json:"error"`
+		Error   string `json:"error"`
+		TraceID string `json:"traceId"`
 	} `json:"cities"`
 }
 
@@ -130,6 +131,11 @@ type weatherApiResponse struct {
 	} `json:"response"`
 }
 
+type WeatherResponse struct {
+	TraceID interface{}
+	Weather weatherApiResponse
+}
+
 func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 
 	url := fmt.Sprintf("http://%s/health/live", server.config.RecommendationServiceAddress)
@@ -154,6 +160,7 @@ func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 						population
 					}
 					error
+					traceId
 				}
 			}`
 
@@ -177,6 +184,9 @@ func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 		log.Panic("Cannot unmarshal LocationResponse")
 	}
 
+	// Add TraceID to context
+	ctx.Set("trace_id", locationsResponse.Cities.TraceID)
+
 	for key, value := range locationsResponse.Cities.Data {
 
 		url := fmt.Sprintf("http://%s/v1/weather", server.config.RecommendationServiceAddress)
@@ -186,6 +196,7 @@ func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 		params := req.URL.Query()
 		params.Add("lat", fmt.Sprintf("%v", value.Latitude))
 		params.Add("long", fmt.Sprintf("%v", value.Longitude))
+		params.Add("traceId", locationsResponse.Cities.TraceID)
 		req.URL.RawQuery = params.Encode()
 
 		res, _ := http.DefaultClient.Do(req)
@@ -193,15 +204,15 @@ func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 		defer res.Body.Close()
 		body, _ := ioutil.ReadAll(res.Body)
 
-		var r weatherApiResponse
+		var r WeatherResponse
 		err := json.Unmarshal(body, &r)
 		if err != nil {
 			log.Panic("Cannot unmarshal Response")
 		}
 
-		locationsResponse.Cities.Data[key].TempC = r.Response.Ob.TempC
-		locationsResponse.Cities.Data[key].Weather = r.Response.Ob.Weather
-		locationsResponse.Cities.Data[key].WeatherShort = r.Response.Ob.WeatherShort
+		locationsResponse.Cities.Data[key].TempC = r.Weather.Response.Ob.TempC
+		locationsResponse.Cities.Data[key].Weather = r.Weather.Response.Ob.Weather
+		locationsResponse.Cities.Data[key].WeatherShort = r.Weather.Response.Ob.WeatherShort
 	}
 
 	ctx.JSON(http.StatusOK, locationsResponse)
