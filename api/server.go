@@ -1,11 +1,13 @@
 package api
 
 import (
+	"log"
 	conf "search-service/config"
 	"search-service/db"
 	"search-service/middleware"
 
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 type Server struct {
@@ -19,6 +21,24 @@ func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 	gin.SetMode(config.GinMode)
 	router := gin.Default()
 	router.Use(middleware.Logger(config.LogitAddress))
+
+	// Prometheus gauge registration
+	lastRequestReceivedTime := prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "last_request_received_time",
+		Help: "Time when the last request was processed",
+	})
+	err := prometheus.Register(lastRequestReceivedTime)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	// Middleware to set lastRequestReceivedTime for all requests
+	router.Use(func(context *gin.Context) {
+		log.Println(context.Request.URL.Path)
+		if context.Request.URL.Path != "/metrics" {
+			lastRequestReceivedTime.SetToCurrentTime()
+		}
+	})
 
 	server := &Server{
 		config: config,
