@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"net/http"
 	"search-service/db"
 
@@ -33,6 +34,13 @@ func (server *Server) GetListingByID(ctx *gin.Context) {
 	// Execute query.
 	result, err := server.store.GetListingByID(ctx, req.ID)
 	if err != nil {
+
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, gin.H{"message": "Listing not found!"})
+			ctx.Abort()
+			return
+		}
+
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err})
 		ctx.Abort()
 		return

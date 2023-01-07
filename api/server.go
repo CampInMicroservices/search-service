@@ -16,6 +16,25 @@ type Server struct {
 	router *gin.Engine
 }
 
+var requestCounter = prometheus.NewCounter(
+	prometheus.CounterOpts{
+		Name: "rso_http_request_counter",
+		Help: "Number of HTTP requests",
+	})
+
+var notFoundCounter = prometheus.NewCounter(
+	prometheus.CounterOpts{
+		Name: "rso_not_found_counter",
+		Help: "Number of HTTP not found responses",
+	})
+
+var lastRequestTime = prometheus.NewGauge(
+	prometheus.GaugeOpts{
+		Name: "rso_last_request_received_time",
+		Help: "Time when the last request was processed",
+	})
+
+// Server definition
 func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 
 	gin.SetMode(config.GinMode)
@@ -23,20 +42,24 @@ func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 	router.Use(middleware.Logger(config.LogitAddress))
 
 	// Prometheus gauge registration
-	lastRequestReceivedTime := prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "last_request_received_time",
-		Help: "Time when the last request was processed",
-	})
-	err := prometheus.Register(lastRequestReceivedTime)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	registerCounter(requestCounter)
+	registerCounter(notFoundCounter)
+	registerGauge(lastRequestTime)
 
-	// Middleware to set lastRequestReceivedTime for all requests
+	// Metrics middleware for all requests
 	router.Use(func(context *gin.Context) {
-		log.Println(context.Request.URL.Path)
-		if context.Request.URL.Path != "/metrics" {
-			lastRequestReceivedTime.SetToCurrentTime()
+		if context.Request.URL.Path == "/metrics" {
+			return
+		}
+
+		requestCounter.Inc()
+		lastRequestTime.SetToCurrentTime()
+
+		// Process request
+		context.Next()
+
+		if context.Writer.Status() == 404 {
+			notFoundCounter.Inc()
 		}
 	})
 
@@ -93,4 +116,20 @@ func (server *Server) Start(address string) error {
 
 func errorResponse(err error) gin.H {
 	return gin.H{"error": err.Error()}
+}
+
+func registerCounter(c prometheus.Counter) {
+	err := prometheus.Register(c)
+	handleErr(err)
+}
+
+func registerGauge(g prometheus.Gauge) {
+	err := prometheus.Register(g)
+	handleErr(err)
+}
+
+func handleErr(err error) {
+	if err != nil {
+		log.Fatalln(err)
+	}
 }

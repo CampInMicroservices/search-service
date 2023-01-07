@@ -128,6 +128,21 @@ Run Consul inside Docker:
 sudo docker run -d -p 80:8500 -p 8600:8600/udp --name=consul consul:1.14.3 agent -server -bootstrap -ui -client=0.0.0.0
 ```
 
+## Metrics
+
+Custom metrics:
+
+1. Number of HTTP requests
+2. Number of HTTP not found responses
+3. Time when the last request was processed
+
+Aliases:
+```
+rso_http_request_counter
+rso_last_request_received_time
+rso_not_found_counter
+```
+
 ## Roadmap
 
 - [x] Dockerfile
