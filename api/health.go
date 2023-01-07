@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -21,34 +20,15 @@ func (server *Server) Live(ctx *gin.Context) {
 
 func (server *Server) Ready(ctx *gin.Context) {
 
-	dbConnectionStatus := "UP"
-	recommendationServiceConnectionStatus := "UP"
-
 	// Check connection with database.
-	dbErr := server.store.PingDB()
-	if dbErr != nil {
-		dbConnectionStatus = "DOWN"
-	}
-
-	url := fmt.Sprintf("http://%s/health/live", server.config.RecommendationServiceAddress)
-	_, err := PingRecommendationService(url)
-
+	err := server.store.PingDB()
 	if err != nil {
-		recommendationServiceConnectionStatus = "DOWN"
-	}
-
-	status := gin.H{"status": gin.H{
-		"db_connection":          dbConnectionStatus,
-		"recommendation_service": recommendationServiceConnectionStatus,
-	}}
-
-	if dbConnectionStatus == "DOWN" || recommendationServiceConnectionStatus == "DOWN" {
-		ctx.JSON(http.StatusServiceUnavailable, status)
+		ctx.JSON(http.StatusServiceUnavailable, gin.H{"status": "DOWN"})
 		ctx.Abort()
 		return
 	}
 
-	ctx.JSON(http.StatusOK, status)
+	ctx.JSON(http.StatusOK, gin.H{"status": "UP"})
 }
 
 func PingRecommendationService(url string) (*RecommendationServicePingResponse, error) {
