@@ -1,9 +1,12 @@
 package api
 
 import (
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	conf "search-service/config"
 	"search-service/db"
+	docs "search-service/docs"
 	"search-service/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -90,6 +93,9 @@ func NewServer(config conf.Config, store *db.Store) (*Server, error) {
 	{
 		metrics.GET("", server.Metrics)
 	}
+
+	docs.SwaggerInfo.BasePath = "/search-service"
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	server.router = router
 	return server, nil

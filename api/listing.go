@@ -21,6 +21,17 @@ type createUserRequest struct {
 	Name string `json:"name" binding:"required"`
 }
 
+// @BasePath /search-service/v1
+
+// Listing godoc
+// @Summary Listings by ID
+// @Schemes
+// @Description Returns listing by ID
+// @Tags Listings
+// @Accept json
+// @Produce json
+// @Success 200 {string} helloworld
+// @Router /listings/:id [get]
 func (server *Server) GetListingByID(ctx *gin.Context) {
 
 	// Check if request has ID field in URI.
@@ -49,6 +60,17 @@ func (server *Server) GetListingByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// @BasePath /search-service/v1
+
+// Listing godoc
+// @Summary Listings list
+// @Schemes
+// @Description Returns listing by ID
+// @Tags Listings
+// @Accept json
+// @Produce json
+// @Success 200 {string} helloworld
+// @Router /listings [get]
 func (server *Server) GetAllListings(ctx *gin.Context) {
 
 	// Check if request has parameters offset and limit for pagination.
@@ -75,6 +97,17 @@ func (server *Server) GetAllListings(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
+// @BasePath /search-service/v1
+
+// Listing godoc
+// @Summary Listings create
+// @Schemes
+// @Description Creates a listing
+// @Tags Listings
+// @Accept json
+// @Produce json
+// @Success 200 {string} helloworld
+// @Router /listings [post]
 func (server *Server) CreateListing(ctx *gin.Context) {
 
 	// Check if request has all required fields in json body.

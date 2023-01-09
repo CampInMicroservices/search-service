@@ -1,0 +1,119 @@
+basePath: search-service/v1
+host: 20.13.80.52
+info:
+  contact:
+    email: sr8905@student.uni-lj.si
+    name: Šimen Ravnik
+  description: This is a search service server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: CampIn Search Service API
+  version: "1.0"
+paths:
+  /health/live:
+    get:
+      consumes:
+      - application/json
+      description: Liveness
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Liveness
+      tags:
+      - Health
+  /health/ready:
+    get:
+      consumes:
+      - application/json
+      description: Readiness
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Readiness
+      tags:
+      - Health
+  /listings:
+    get:
+      consumes:
+      - application/json
+      description: Returns listing by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Listings list
+      tags:
+      - Listings
+    post:
+      consumes:
+      - application/json
+      description: Creates a listing
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Listings create
+      tags:
+      - Listings
+  /listings/:id:
+    get:
+      consumes:
+      - application/json
+      description: Returns listing by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Listings by ID
+      tags:
+      - Listings
+  /metrics:
+    get:
+      consumes:
+      - application/json
+      description: Metrics
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Metrics
+      tags:
+      - Metrics
+  /recommendations:
+    get:
+      consumes:
+      - application/json
+      description: Returns recommendations
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Recommendations
+      tags:
+      - Recommendations
+swagger: "2.0"

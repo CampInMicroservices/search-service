@@ -136,6 +136,17 @@ type WeatherResponse struct {
 	Weather weatherApiResponse
 }
 
+// @BasePath /search-service/v1
+
+// Recommendation godoc
+// @Summary Recommendations
+// @Schemes
+// @Description Returns recommendations
+// @Tags Recommendations
+// @Accept json
+// @Produce json
+// @Success 200 {string} helloworld
+// @Router /recommendations [get]
 func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 
 	url := fmt.Sprintf("http://%s/health/live", server.config.RecommendationServiceAddress)
