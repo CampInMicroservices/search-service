@@ -23,7 +23,7 @@ type RecommendationServicePingResponse struct {
 // @Tags Health
 // @Accept json
 // @Produce json
-// @Success 200 {string} UP
+// @Success 200 {array} api.RecommendationServicePingResponse
 // @Router /health/live [get]
 func (server *Server) Live(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"status": "UP"})
@@ -38,7 +38,7 @@ func (server *Server) Live(ctx *gin.Context) {
 // @Tags Health
 // @Accept json
 // @Produce json
-// @Success 200 {string} UP
+// @Success 200 {string} api.RecommendationServicePingResponse
 // @Router /health/ready [get]
 func (server *Server) Ready(ctx *gin.Context) {
 

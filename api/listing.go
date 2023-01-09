@@ -30,8 +30,9 @@ type createUserRequest struct {
 // @Tags Listings
 // @Accept json
 // @Produce json
-// @Success 200 {string} helloworld
-// @Router /listings/:id [get]
+// @Param id query int true "Listing ID"
+// @Success 200 {array} db.Listing
+// @Router /v1/listings/:id [get]
 func (server *Server) GetListingByID(ctx *gin.Context) {
 
 	// Check if request has ID field in URI.
@@ -69,8 +70,8 @@ func (server *Server) GetListingByID(ctx *gin.Context) {
 // @Tags Listings
 // @Accept json
 // @Produce json
-// @Success 200 {string} helloworld
-// @Router /listings [get]
+// @Success 200 {array} db.Listing
+// @Router /v1/listings [get]
 func (server *Server) GetAllListings(ctx *gin.Context) {
 
 	// Check if request has parameters offset and limit for pagination.
@@ -106,8 +107,9 @@ func (server *Server) GetAllListings(ctx *gin.Context) {
 // @Tags Listings
 // @Accept json
 // @Produce json
-// @Success 200 {string} helloworld
-// @Router /listings [post]
+// @Param listing formData db.Listing true "Listing"
+// @Success 200 {array} db.Listing
+// @Router /v1/listings [post]
 func (server *Server) CreateListing(ctx *gin.Context) {
 
 	// Check if request has all required fields in json body.

@@ -143,6 +143,18 @@ rso_last_request_received_time
 rso_not_found_counter
 ```
 
+## OpenAPI specification
+
+OpenAPI specification is available at: http://20.13.80.52/search-service/swagger/index.html
+
+How to compile OpenAPI changes:
+
+1. Change the comments above the REST method
+2. Run next command
+```
+swag init
+```
+
 ## Roadmap
 
 - [x] Dockerfile

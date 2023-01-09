@@ -41,7 +41,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/api.RecommendationServicePingResponse"
+                            }
                         }
                     }
                 }
@@ -60,73 +63,6 @@ const docTemplate = `{
                     "Health"
                 ],
                 "summary": "Readiness",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/listings": {
-            "get": {
-                "description": "Returns listing by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Listings"
-                ],
-                "summary": "Listings list",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Creates a listing",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Listings"
-                ],
-                "summary": "Listings create",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/listings/:id": {
-            "get": {
-                "description": "Returns listing by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Listings"
-                ],
-                "summary": "Listings by ID",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -160,7 +96,109 @@ const docTemplate = `{
                 }
             }
         },
-        "/recommendations": {
+        "/v1/listings": {
+            "get": {
+                "description": "Returns listing by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Listings"
+                ],
+                "summary": "Listings list",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/db.Listing"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a listing",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Listings"
+                ],
+                "summary": "Listings create",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "created_at",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/db.Listing"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/listings/:id": {
+            "get": {
+                "description": "Returns listing by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Listings"
+                ],
+                "summary": "Listings by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Listing ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/db.Listing"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/recommendations": {
             "get": {
                 "description": "Returns recommendations",
                 "consumes": [
@@ -177,9 +215,81 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/api.LocationsResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "api.LocationsResponse": {
+            "type": "object",
+            "properties": {
+                "cities": {
+                    "type": "object",
+                    "properties": {
+                        "data": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "number"
+                                    },
+                                    "longitude": {
+                                        "type": "number"
+                                    },
+                                    "population": {
+                                        "type": "integer"
+                                    },
+                                    "tempC": {
+                                        "type": "integer"
+                                    },
+                                    "weather": {
+                                        "type": "string"
+                                    },
+                                    "weatherShort": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "error": {
+                            "type": "string"
+                        },
+                        "traceId": {
                             "type": "string"
                         }
                     }
+                }
+            }
+        },
+        "api.RecommendationServicePingResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "db.Listing": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         }
