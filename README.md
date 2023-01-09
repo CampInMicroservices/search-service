@@ -155,6 +155,8 @@ How to compile OpenAPI changes:
 swag init
 ```
 
+*Annotations available at: https://github.com/swaggo/swag/blob/master/README.md#declarative-comments-format
+
 ## Roadmap
 
 - [x] Dockerfile
