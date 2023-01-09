@@ -196,7 +196,7 @@ func (server *Server) GetRecommendedLocations(ctx *gin.Context) {
 		params := req.URL.Query()
 		params.Add("lat", fmt.Sprintf("%v", value.Latitude))
 		params.Add("long", fmt.Sprintf("%v", value.Longitude))
-		params.Add("traceId", locationsResponse.Cities.TraceID)
+		params.Add("trace_id", locationsResponse.Cities.TraceID)
 		req.URL.RawQuery = params.Encode()
 
 		res, _ := http.DefaultClient.Do(req)
