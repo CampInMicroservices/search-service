@@ -108,6 +108,17 @@ paths:
       consumes:
       - application/json
       description: Returns listing by ID
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -146,14 +157,14 @@ paths:
       summary: Listings create
       tags:
       - Listings
-  /v1/listings/:id:
+  /v1/listings/{id}:
     get:
       consumes:
       - application/json
       description: Returns listing by ID
       parameters:
       - description: Listing ID
-        in: query
+        in: path
         name: id
         required: true
         type: integer

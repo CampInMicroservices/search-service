@@ -13,7 +13,7 @@ type getUserRequest struct {
 }
 
 type getUserListRequest struct {
-	Offset int32 `form:"offset"`
+	Offset int32 `form:"offset" binding:"required"`
 	Limit  int32 `form:"limit" binding:"required,min=1,max=20"`
 }
 
@@ -30,9 +30,9 @@ type createUserRequest struct {
 // @Tags Listings
 // @Accept json
 // @Produce json
-// @Param id query int true "Listing ID"
+// @Param id path int true "Listing ID"
 // @Success 200 {array} db.Listing
-// @Router /v1/listings/:id [get]
+// @Router /v1/listings/{id} [get]
 func (server *Server) GetListingByID(ctx *gin.Context) {
 
 	// Check if request has ID field in URI.
@@ -70,6 +70,8 @@ func (server *Server) GetListingByID(ctx *gin.Context) {
 // @Tags Listings
 // @Accept json
 // @Produce json
+// @Param limit query int true "Limit"
+// @Param offset query int true "Offset"
 // @Success 200 {array} db.Listing
 // @Router /v1/listings [get]
 func (server *Server) GetAllListings(ctx *gin.Context) {

@@ -109,6 +109,22 @@ const docTemplate = `{
                     "Listings"
                 ],
                 "summary": "Listings list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -163,7 +179,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/listings/:id": {
+        "/v1/listings/{id}": {
             "get": {
                 "description": "Returns listing by ID",
                 "consumes": [
@@ -181,7 +197,7 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Listing ID",
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
