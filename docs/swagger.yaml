@@ -136,15 +136,12 @@ paths:
       - application/json
       description: Creates a listing
       parameters:
-      - in: formData
-        name: created_at
-        type: string
-      - in: formData
-        name: id
-        type: integer
-      - in: formData
-        name: name
-        type: string
+      - description: Listing
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/db.Listing'
       produces:
       - application/json
       responses:

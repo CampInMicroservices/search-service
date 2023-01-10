@@ -109,7 +109,7 @@ func (server *Server) GetAllListings(ctx *gin.Context) {
 // @Tags Listings
 // @Accept json
 // @Produce json
-// @Param listing formData db.Listing true "Listing"
+// @Param request body db.Listing true "Listing"
 // @Success 200 {array} db.Listing
 // @Router /v1/listings [post]
 func (server *Server) CreateListing(ctx *gin.Context) {

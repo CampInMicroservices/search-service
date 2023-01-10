@@ -144,19 +144,13 @@
                 "summary": "Listings create",
                 "parameters": [
                     {
-                        "type": "string",
-                        "name": "created_at",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "id",
-                        "in": "formData"
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "formData"
+                        "description": "Listing",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Listing"
+                        }
                     }
                 ],
                 "responses": {
